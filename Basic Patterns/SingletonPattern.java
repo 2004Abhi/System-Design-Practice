@@ -2,10 +2,14 @@ import java.util.*;
 
 
 class DatabaseConnection{
-  public static DatabaseConnection connection;
+  public static volatile DatabaseConnection connection;
   public static DatabaseConnection getConnection(){
     if(connection==null){
-        connection=new DatabaseConnection();
+      synchronized(DatabaseConnection.class){
+        if(connection==null){
+          connection=new DatabaseConnection();
+        }
+      }
     }
     return connection;
   }
